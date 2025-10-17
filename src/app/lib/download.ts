@@ -20,6 +20,7 @@ interface ApiResponse {
 export interface DownloadResult {
   success: boolean;
   error?: string;
+  thumbnail?: string;
   links?: DownloadLinks;
 }
 
@@ -42,6 +43,13 @@ const extractDownloadId = (html: string): DownloadIds => {
     sd: sdMatch ? sdMatch[1] : null,
     mp3: mp3Match ? mp3Match[1] : null,
   };
+};
+
+const extractThumbnail = (html: string): string | null => {
+  const thumbnailMatch = html.match(
+    /<img\s+src="([^"]+)"\s+alt="Preview image">/
+  );
+  return thumbnailMatch ? thumbnailMatch[1] : null;
 };
 
 export async function getDownloadLinks(url: string): Promise<DownloadResult> {
@@ -74,6 +82,7 @@ export async function getDownloadLinks(url: string): Promise<DownloadResult> {
 
     if (data.status && data.data) {
       const ids = extractDownloadId(data.data);
+      const thumbnail = extractThumbnail(data.data);
 
       if (!ids.hd && !ids.sd && !ids.mp3) {
         return {
@@ -85,6 +94,7 @@ export async function getDownloadLinks(url: string): Promise<DownloadResult> {
       // Build proper download URLs with countdown=0
       return {
         success: true,
+        thumbnail: thumbnail || undefined,
         links: {
           hd: ids.hd
             ? `${SAVETIKX_API}/wp-content/plugins/visolix-video-downloader/dl.php?id=${ids.hd}&countdown=0`
