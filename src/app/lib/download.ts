@@ -12,6 +12,12 @@ interface DownloadLinks {
   mp3: string | null;
 }
 
+interface DownloadSizes {
+  hd: string | null;
+  sd: string | null;
+  mp3: string | null;
+}
+
 interface ApiResponse {
   status: boolean;
   data?: string;
@@ -22,12 +28,12 @@ export interface DownloadResult {
   error?: string;
   thumbnail?: string;
   links?: DownloadLinks;
+  sizes?: DownloadSizes;
 }
 
 const SAVETIKX_API = process.env.NEXT_PUBLIC_SAVETIKX_API;
 
 const extractDownloadId = (html: string): DownloadIds => {
-  // Regex to capture any ID format from the href attribute
   const hdMatch = html.match(
     /href="[^"]*dl\.php\?id=([a-zA-Z0-9]+)"[^>]*>[\s\S]*?Download\s*\(HD\)/
   );
@@ -37,11 +43,29 @@ const extractDownloadId = (html: string): DownloadIds => {
   const mp3Match = html.match(
     /href="[^"]*dl\.php\?id=([a-zA-Z0-9]+)"[^>]*>[\s\S]*?Download\s*\(MP3\)/
   );
-
+  
   return {
     hd: hdMatch ? hdMatch[1] : null,
     sd: sdMatch ? sdMatch[1] : null,
     mp3: mp3Match ? mp3Match[1] : null,
+  };
+};
+
+const extractFileSizes = (html: string): DownloadSizes => {
+  const hdSizeMatch = html.match(
+    /Download\s+\(HD\)\s+\(([0-9.]+\s*(?:KB|MB|GB))\)/i
+  );
+  const sdSizeMatch = html.match(
+    /Download\s+\(SD\)\s+\(([0-9.]+\s*(?:KB|MB|GB))\)/i
+  );
+  const mp3SizeMatch = html.match(
+    /Download\s+\(MP3\)\s+\(([0-9.]+\s*(?:KB|MB|GB))\)/i
+  );
+
+  return {
+    hd: hdSizeMatch ? hdSizeMatch[1].trim() : null,
+    sd: sdSizeMatch ? sdSizeMatch[1].trim() : null,
+    mp3: mp3SizeMatch ? mp3SizeMatch[1].trim() : null,
   };
 };
 
@@ -56,13 +80,12 @@ export async function getDownloadLinks(url: string): Promise<DownloadResult> {
   if (!url.trim()) {
     return { success: false, error: "Please enter a TikTok URL" };
   }
-
+  
   if (!url.includes("tiktok.com")) {
     return { success: false, error: "Please enter a valid TikTok URL" };
   }
-
+  
   try {
-    // IMPORTANT: Payload must be in exact order as specified
     const response = await fetch(
       `${SAVETIKX_API}/wp-json/visolix/api/download`,
       {
@@ -77,21 +100,21 @@ export async function getDownloadLinks(url: string): Promise<DownloadResult> {
         }),
       }
     );
-
+    
     const data: ApiResponse = await response.json();
-
+    
     if (data.status && data.data) {
       const ids = extractDownloadId(data.data);
+      const sizes = extractFileSizes(data.data);
       const thumbnail = extractThumbnail(data.data);
-
+      
       if (!ids.hd && !ids.sd && !ids.mp3) {
         return {
           success: false,
           error: "Could not extract download links. Please try again.",
         };
       }
-
-      // Build proper download URLs with countdown=0
+      
       return {
         success: true,
         thumbnail: thumbnail || undefined,
@@ -106,9 +129,14 @@ export async function getDownloadLinks(url: string): Promise<DownloadResult> {
             ? `${SAVETIKX_API}/wp-content/plugins/visolix-video-downloader/dl.php?id=${ids.mp3}&countdown=0`
             : null,
         },
+        sizes: {
+          hd: sizes.hd,
+          sd: sizes.sd,
+          mp3: sizes.mp3,
+        },
       };
     }
-
+    
     return {
       success: false,
       error: "Failed to fetch download links. Please try again.",
