@@ -19,12 +19,6 @@ const Home: React.FC = () => {
 
           <DownloadForm />
         </div>
-
-        <div className="text-center mt-6">
-          <p className="text-gray-500 text-sm">
-            Paste any TikTok video URL to download
-          </p>
-        </div>
       </div>
     </div>
   );
