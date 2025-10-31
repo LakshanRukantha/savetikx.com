@@ -49,7 +49,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
           <button
             type="button"
             onClick={() => handleDirectDownload(links.hd!)}
-            className="w-full p-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group"
+            className="w-full p-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -68,7 +68,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
           <button
             type="button"
             onClick={() => handleDirectDownload(links.sd!)}
-            className="w-full p-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group"
+            className="w-full p-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
@@ -89,7 +89,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
           <button
             type="button"
             onClick={() => handleDirectDownload(links.mp3!)}
-            className="w-full p-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group"
+            className="w-full p-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between group cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
