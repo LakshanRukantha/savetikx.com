@@ -68,8 +68,8 @@ const DownloadForm: React.FC = () => {
         </button>
       </div>
 
-      {result && result.success && result.links && (
-        <DownloadOptions links={result.links} thumbnail={result.thumbnail} />
+      {result && result.success && result.links && result.sizes && (
+        <DownloadOptions links={result.links} sizes={result.sizes} thumbnail={result.thumbnail} />
       )}
     </>
   );

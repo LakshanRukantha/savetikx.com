@@ -9,13 +9,21 @@ interface DownloadLinks {
   mp3: string | null;
 }
 
+interface DownloadSizes {
+  hd: string | null;
+  sd: string | null;
+  mp3: string | null;
+}
+
 interface DownloadOptionsProps {
   links: DownloadLinks;
+  sizes: DownloadSizes;
   thumbnail?: string;
 }
 
 const DownloadOptions: React.FC<DownloadOptionsProps> = ({
   links,
+  sizes,
   thumbnail,
 }) => {
   const handleDirectDownload = (downloadUrl: string): void => {
@@ -60,6 +68,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
                 <div className="text-xs text-white/80">Best quality video</div>
               </div>
             </div>
+            {sizes.hd}
             <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
           </button>
         )}
@@ -81,6 +90,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
                 </div>
               </div>
             </div>
+            {sizes.sd}
             <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
           </button>
         )}
@@ -100,6 +110,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
                 <div className="text-xs text-white/80">Audio only</div>
               </div>
             </div>
+            {sizes.mp3}
             <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
           </button>
         )}
