@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Download, Video, Music } from "lucide-react";
+import Image from "next/image";
 
 interface DownloadLinks {
   hd: string | null;
@@ -41,7 +42,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
     <div className="flex flex-col sm:flex-row items-start gap-4 mt-8">
       {thumbnail && (
         <div className="rounded-xl overflow-hidden w-full sm:max-w-40 border border-gray-700">
-          <img
+          <Image
             src={thumbnail}
             alt="Video thumbnail"
             className="w-full h-auto object-cover"
