@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { Download, Loader2, AlertCircle } from "lucide-react";
 import DownloadOptions from "./download-options";
 import { DownloadResult, getDownloadLinks } from "../lib/download";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const DownloadForm: React.FC = () => {
   const [url, setUrl] = useState<string>("");
@@ -26,9 +28,9 @@ const DownloadForm: React.FC = () => {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <input
+          <Input
             type="text"
             value={url}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -38,7 +40,7 @@ const DownloadForm: React.FC = () => {
             onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
               e.key === "Enter" && handleSubmit(e)
             }
-            className="w-full px-4 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
+            className="w-full"
           />
         </div>
 
@@ -49,10 +51,10 @@ const DownloadForm: React.FC = () => {
           </div>
         )}
 
-        <button
+        <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full cursor-pointer py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+          className="w-full cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
@@ -65,11 +67,15 @@ const DownloadForm: React.FC = () => {
               Download
             </>
           )}
-        </button>
+        </Button>
       </div>
 
       {result && result.success && result.links && result.sizes && (
-        <DownloadOptions links={result.links} sizes={result.sizes} thumbnail={result.thumbnail} />
+        <DownloadOptions
+          links={result.links}
+          sizes={result.sizes}
+          thumbnail={result.thumbnail}
+        />
       )}
     </>
   );
