@@ -44,15 +44,15 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
         <div className="rounded-xl overflow-hidden w-full sm:max-w-40 border border-gray-700">
           <Image
             src={thumbnail}
+            height={720}
+            width={405}
             alt="Video thumbnail"
             className="w-full h-auto object-cover"
           />
         </div>
       )}
       <div className="flex flex-col w-full gap-2">
-        <h3 className="text-lg font-semibold text-white mb-2">
-          Download Options
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">Download Options</h3>
 
         {links.hd && (
           <button
